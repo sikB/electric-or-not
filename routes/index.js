@@ -9,15 +9,23 @@ var db;
 
 // 'mongodb://localhost:27017/electricOrNot'
 mongoClient.connect(mongoUrl, function(error, database){
+  // db.collection('cars').find({}).toArray(function(error,carResult){
+  //   var getRandomImage = Math.floor(Math.random() * carResult.length);
 	db = database;
 
-})
+  })
+// });
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
   db.collection('cars').find({}).toArray(function(error,carResult){
-  	var getRandomImage = Math.floor(Math.random() * carResult.length);
-  	 res.render('index', { carImage: carResult[getRandomImage].imageSrc });
+    var getRandomImage = Math.floor(Math.random() * carResult.length);
+    var currIP = req.ip;
+    console.log('The current users IP is: ' + currIP);
+    
+
+
+  	res.render('index', { carImage: carResult[getRandomImage].imageSrc });
   })
 });
 

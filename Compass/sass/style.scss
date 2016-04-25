@@ -4,11 +4,21 @@
 // @import 'standings';
 #photosWrapper h1{
 	margin-top: 7%;
+	text-align: center;
 }
 .voteButton{
 	float: left;
-	clear: right;
+	position: absolute;
+	left: 25%;
 }
-.lorem{
-	clear: all;
+.voteButton1{
+	float: left;
+	position: absolute;
+	left: 59%;
+}
+.images{
+	margin-top: 5%;
+	max-width: 500px;
+	position: relative;
+	left: 28%;
 }
