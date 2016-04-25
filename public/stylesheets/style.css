@@ -12,3 +12,14 @@ body {
 #photosWrapper h1 {
   margin-top: 7%;
 }
+
+/* line 8, ../../Compass/sass/style.scss */
+.voteButton {
+  float: left;
+  clear: right;
+}
+
+/* line 12, ../../Compass/sass/style.scss */
+.lorem {
+  clear: all;
+}
