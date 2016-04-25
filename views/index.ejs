@@ -5,7 +5,16 @@
 <div id="photosWrapper">
 	<h1>A node.js voting game -- is it electric?</h1>
 	<div id="photo">
-		<img src="images/peel.jpg">
+	</div>
+	<div id="button-holder">
+		<form class="voteButton" action="/.electric" method="post">
+		<input type="text" name="car">
+			<input type="submit" class="btn btn-info" value="Electric!">
+		</form>
+		<form class="voteButton" action="/.notElectric" method="post">
+			<input type="text" name="car">
+			<input type="submit" class="btn btn-info" value="Not Electric">
+		</form>
 	</div>
 	</div>
 
