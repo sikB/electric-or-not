@@ -34,6 +34,16 @@ router.get('/', function(req, res, next) {
   })
 });
 
+router.get('/standings', function(req, res, next){
+  db.collection('cars').find().toArray(function(error, result){
+    result.sort(function(a,b){
+      return (b.totalVotes - a.totalVotes)
+    });
+    res.render('standings', {theStandings: result});
+  });
+
+});
+
 router.post('/electric', function(req, res, next){
   // res.send(req.body);
   db.collection('users').insertOne({
@@ -63,7 +73,7 @@ router.post('/electric', function(req, res, next){
 router.post('/notElectric', function(req, res, next){
   db.collection('users').insertOne({
     ip: req.ip,
-    vote: 'electric',
+    vote: 'notElectric',
     image: req.body.photo
   });
   db.collection('cars').find({imageSrc: req.body.photo}).toArray(function(error, result){
