@@ -9,29 +9,27 @@ var db;
 
 // 'mongodb://localhost:27017/electricOrNot'
 mongoClient.connect(mongoUrl, function(error, database){
-  // db.collection('cars').find({}).toArray(function(error,carResult){
-  //   var getRandomImage = Math.floor(Math.random() * carResult.length);
 	db = database;
-
   })
-// });
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  db.collection('cars').find({}).toArray(function(error,carResult){
-    var getRandomImage = Math.floor(Math.random() * carResult.length);
-    var currIP = req.ip;
-    console.log('The current users IP is: ' + currIP);
-    db.collection('users').find({ip:currIP}).toArray(function(error, userResult){
-      if(userResult.length == 0){
-        // photosToShow = allPhotos;
-      }else{
-        // res.send('Thanks for your vote!')
-      }     
-    })
+  var photosVoted = [];
+  var currIP = req.ip;
+  db.collection('users').find({ip:currIP}).toArray(function(error, userResult){ 
+    for(i=0; i<userResult.length; i++){
+            photosVoted.push(userResult[i].image);
+        }
 
-  	res.render('index', { carImage: carResult[getRandomImage].imageSrc });
-  })
+    db.collection('cars').find({imageSrc: {$nin: photosVoted}}).toArray(function(error, result){
+    if(result.length == 0){
+      res.redirect('/standings');
+    }else{
+      var getRandomImage = Math.floor(Math.random() * result.length);
+      res.render('index', { carImage: result[getRandomImage].imageSrc });
+      } 
+    });
+  });
 });
 
 router.get('/standings', function(req, res, next){
