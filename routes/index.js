@@ -25,11 +25,10 @@ router.get('/', function(req, res, next) {
     db.collection('users').find({ip:currIP}).toArray(function(error, userResult){
       if(userResult.length == 0){
         // photosToShow = allPhotos;
-      }
-      
+      }else{
+        // res.send('Thanks for your vote!')
+      }     
     })
-
-
 
   	res.render('index', { carImage: carResult[getRandomImage].imageSrc });
   })
@@ -37,26 +36,53 @@ router.get('/', function(req, res, next) {
 
 router.post('/electric', function(req, res, next){
   // res.send(req.body);
-  db.collection('cars').updateOne(
-  {imageSrc: req.body.photo},
-  {$set: {'totalVotes': 1}},
-  function(error, results){
-    console.log(results);
-  }
-  )
-  res.send('The user chose ' + req.body.photo + ' as an electric car');
+  db.collection('users').insertOne({
+    ip: req.ip,
+    vote: 'electric',
+    image: req.body.photo
+  });
+  db.collection('cars').find({imageSrc: req.body.photo}).toArray(function(error, result){
+    if(isNaN(result[0].totalVotes)){
+      total = 0;
+    }else{
+      total = result[0].totalVotes;
+    }
+     db.collection('cars').updateOne(
+      {imageSrc: req.body.photo},
+      {$set: {'totalVotes': total + 1}},
+      function(error, results){
+        // console.log(results);
+      }
+    )
+
+  });
+  // res.send('The user chose ' + req.body.photo + ' as an electric car');
+  res.redirect('/');
 });
 
 router.post('/notElectric', function(req, res, next){
+  db.collection('users').insertOne({
+    ip: req.ip,
+    vote: 'electric',
+    image: req.body.photo
+  });
+  db.collection('cars').find({imageSrc: req.body.photo}).toArray(function(error, result){
+    if(isNaN(result[0].totalVotes)){
+      total = 0;
+    }else{
+      total = result[0].totalVotes;
+    }
   // res.send(req.body);
   db.collection('cars').updateOne(
   {imageSrc: req.body.photo},
-  {$set: {'totalVotes': -1}},
+  {$set: {'totalVotes': total - 1}},
   function(error, results){
-    console.log(results);
-  }
+    
+    }
   )
-  res.send('The user chose ' + req.body.photo + ' as not an electric car');
+});
+  // res.send('The user chose ' + req.body.photo + ' as not an electric car');
+  res.redirect('/');
 });
 
 module.exports = router;
