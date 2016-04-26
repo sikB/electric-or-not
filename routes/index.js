@@ -22,7 +22,13 @@ router.get('/', function(req, res, next) {
     var getRandomImage = Math.floor(Math.random() * carResult.length);
     var currIP = req.ip;
     console.log('The current users IP is: ' + currIP);
-    
+    db.collection('users').find({ip:currIP}).toArray(function(error, userResult){
+      if(userResult.length == 0){
+        // photosToShow = allPhotos;
+      }
+      
+    })
+
 
 
   	res.render('index', { carImage: carResult[getRandomImage].imageSrc });
@@ -31,11 +37,25 @@ router.get('/', function(req, res, next) {
 
 router.post('/electric', function(req, res, next){
   // res.send(req.body);
+  db.collection('cars').updateOne(
+  {imageSrc: req.body.photo},
+  {$set: {'totalVotes': 1}},
+  function(error, results){
+    console.log(results);
+  }
+  )
   res.send('The user chose ' + req.body.photo + ' as an electric car');
 });
 
 router.post('/notElectric', function(req, res, next){
   // res.send(req.body);
+  db.collection('cars').updateOne(
+  {imageSrc: req.body.photo},
+  {$set: {'totalVotes': -1}},
+  function(error, results){
+    console.log(results);
+  }
+  )
   res.send('The user chose ' + req.body.photo + ' as not an electric car');
 });
 
