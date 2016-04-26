@@ -3,11 +3,9 @@ var router = express.Router();
 var mongo = require('mongodb');
 var mongoClient = mongo.MongoClient;
 var mongoUrl = process.env.MONGOLAB_URI || process.env.MONGOLAB_URL || 
-'mongodb://localhost:27017/electricOrNot';
+'mongodb://localhost:27017/electricOrNot' || 'https://still-chamber-54392.herokuapp.com/';
 var db;
 
-
-// 'mongodb://localhost:27017/electricOrNot'
 mongoClient.connect(mongoUrl, function(error, database){
 	db = database;
   })
@@ -39,7 +37,6 @@ router.get('/standings', function(req, res, next){
     });
     res.render('standings', {theStandings: result});
   });
-
 });
 
 router.post('/electric', function(req, res, next){
@@ -62,9 +59,7 @@ router.post('/electric', function(req, res, next){
         // console.log(results);
       }
     )
-
   });
-  // res.send('The user chose ' + req.body.photo + ' as an electric car');
   res.redirect('/');
 });
 
@@ -74,22 +69,21 @@ router.post('/notElectric', function(req, res, next){
     vote: 'notElectric',
     image: req.body.photo
   });
+
   db.collection('cars').find({imageSrc: req.body.photo}).toArray(function(error, result){
     if(isNaN(result[0].totalVotes)){
       total = 0;
     }else{
       total = result[0].totalVotes;
     }
-  // res.send(req.body);
+
   db.collection('cars').updateOne(
   {imageSrc: req.body.photo},
   {$set: {'totalVotes': total - 1}},
-  function(error, results){
-    
+  function(error, results){ 
     }
   )
 });
-  // res.send('The user chose ' + req.body.photo + ' as not an electric car');
   res.redirect('/');
 });
 

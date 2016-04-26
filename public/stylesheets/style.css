@@ -8,27 +8,33 @@ body {
   color: #b30047;
 }
 
-/* line 5, ../../Compass/sass/style.scss */
+/* line 1, ../../Compass/sass/_standings.scss */
+.list {
+  margin-top: 5%;
+  margin-left: 2%;
+}
+
+/* line 6, ../../Compass/sass/style.scss */
 #photosWrapper h1 {
   margin-top: 7%;
   text-align: center;
 }
 
-/* line 9, ../../Compass/sass/style.scss */
+/* line 10, ../../Compass/sass/style.scss */
 .voteButton {
   float: left;
   position: absolute;
   left: 25%;
 }
 
-/* line 14, ../../Compass/sass/style.scss */
+/* line 15, ../../Compass/sass/style.scss */
 .voteButton1 {
   float: left;
   position: absolute;
   left: 59%;
 }
 
-/* line 19, ../../Compass/sass/style.scss */
+/* line 20, ../../Compass/sass/style.scss */
 .images {
   margin-top: 5%;
   max-width: 500px;
