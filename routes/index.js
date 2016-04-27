@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var mongo = require('mongodb');
 var mongoClient = mongo.MongoClient;
-var mongoUrl = process.env.MONGOLAB_URI || process.env.MONGOLAB_URL || 
+var mongoUrl = process.env.MONGOLAB_URI || process.env.MONGOLAB_URL || process.env.MONGODB_URI ||
 'mongodb://localhost:27017/electricOrNot' || 'https://still-chamber-54392.herokuapp.com/';
 var db;
 
