@@ -10,6 +10,25 @@ mongoClient.connect(mongoUrl, function(error, database){
 	db = database;
   })
 
+router.get('/carlist', function(req, res, next) {
+  var photosVoted = [];
+  var currIP = req.ip;
+  db.collection('users').find({ip:currIP}).toArray(function(error, userResult){ 
+    for(i=0; i<userResult.length; i++){
+            photosVoted.push(userResult[i].image);
+        }
+
+    db.collection('cars').find({imageSrc: {$nin: photosVoted}}).toArray(function(error, result){
+    if(result.length == 0){
+      res.redirect('/standings');
+    }else{
+      var getRandomImage = Math.floor(Math.random() * result.length);
+      res.json(result[getRandomImage].imageSrc);
+      } 
+    });
+  });
+});
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   var photosVoted = [];
